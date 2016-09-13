@@ -58,6 +58,7 @@ a {
     font-size:100%;
     vertical-align:baseline;
     background:transparent;
+    text-decoration: none;
 }
 
 /* change colours to suit your needs */
@@ -156,9 +157,65 @@ section {
 	margin: 7px 0;
 }
 
-p {
+p, h2 {
     padding: 16px 25px;
     color: #434343;
     text-align: center;
     font-family: calibri;
+}
+
+h2 {
+    background: #DDD;
+    font-weight: normal;
+    font-size: 22px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#transportadoras, #estados, #historico {
+	display: none;
+}
+
+
+form {
+    width: 50%;
+    margin: 12px auto;
+}
+
+label {
+    display: block;
+    text-align: center;
+    background: #DDD;
+    padding: 10px 0 0;
+    color: #434343;
+    font-family: calibri;
+    margin-bottom: 12px;
+}
+
+input[type="date"] {
+    width: 100%;
+    font-family: calibri;
+    font-size: 16px;
+    padding: 7px;
+    margin-top: 10px;
+    border: 1px solid #DDD;
+    color: #434343;
+}
+
+input[type="submit"] {
+    background: #2680e6;
+    color: #FFF;
+    border: none;
+    padding: 16px 10%;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: all 0.43s;
+    -o-transition: all 0.43s;
+    -moz-transition: all 0.43s;
+    -webkit-transition: all 0.43s;
+}
+
+input[type="submit"]:hover {
+    background: #3a92f8;
 }

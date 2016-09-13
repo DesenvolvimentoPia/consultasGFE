@@ -2,6 +2,30 @@
 
 // Arquivo de Corpo
 
+if(!empty($_POST['hiddenTransp'])){
+?>
+
+<style> #home {	display: none;} #transportadoras { display: block;} </style>
+
+<?php	
+}
+
+else if(!empty($_POST['hiddenEstados'])){
+?>
+
+<style> #home {	display: none;} #estados { display: block;} </style>
+
+<?php		
+}
+
+else if(!empty($_POST['hiddenHistorico'])){
+?>
+
+<style> #home {	display: none;} #historico { display: block;} </style>
+
+<?php		
+}
+
 ?>
 
 <body>
@@ -12,17 +36,52 @@
 	<h1>Consultas GFE - PIÁ</h1>
 
 	<nav>
-		<a>Home</a>
-		<a>Transportadoras</a>
-		<a>Estados</a>
-		<a>Histórico</a>
-		<a>Logout</a>
+		<a href="#home" class="acao">Home</a>
+		<a href="#transportadoras" class="acao">Transportadoras</a>
+		<a href="#estados" class="acao">Estados</a>
+		<a href="#historico" class="acao">Histórico</a>
+		<a href="../logout.php">Logout</a>
 	</nav>
 
 </header>
 
-<section>
+<section id="home">
 	<p>Olá, <strong>Thiago Santos</strong>. Use o Menu Superior para Navegar.</p>
+</section>
+
+
+
+<section id="transportadoras">
+	<h2>Consultar por Transportadoras</h2>
+	<form id="formularioTransportadoras" method="post" action="./">
+		<input type="hidden" name="hiddenTransp" value="true">
+		<label>Data Inicial<input type="date" name="dataInicialTransp"></label>
+		<label>Data Final<input type="date" name="dataFinalTransp"></label>
+		<input type="submit" value="Consultar">
+	</form>
+
+	<div id="resultadosTransportadoras" ng-app="appTransp">
+	
+	</div>
+
+</section>
+
+
+
+<section id="estados">
+	<h2>Consultar por Estados</h2>
+	<form id="formularioEstado" method="post" action="./">
+	<input type="hidden" name="hiddenEstados" value="true">
+	<label>Data Inicial<input type="date" name="dataInicialEstados"></label>
+	<label>Data Final<input type="date" name="dataFinalEstados"></label>
+	<input type="submit" value="Consultar">
+	</form>
+</section>
+
+
+
+<section id="historico">
+	<h2>Consultar Histórico</h2>
 </section>
 
 </main>
