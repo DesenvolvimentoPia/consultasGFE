@@ -2,7 +2,7 @@
 
 session_start();
 
-if(empty($_SESSION['usuario'])) header("location: ../login.php");
+if(!empty($_SESSION['usuario'])) header("location: ../login.php");
 
 else {
 
