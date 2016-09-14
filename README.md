@@ -1,7 +1,7 @@
 # consultasGFE
 
-Cooperativa Agorpecuária PIÁ  
-Data de Início: 13/08/2016  
+Cooperativa Agropecuária PIÁ  
+Data de Início: 13/09/2016  
 Autor: Thiago Santos
 
 Breve Descrição: consultasGFE é um módulo dos Relatórios de Suporte - PIÁ. Visa possibilitar a consulta, listagem e exportação CSV de dados referentes aos Fretes - PIÁ.
