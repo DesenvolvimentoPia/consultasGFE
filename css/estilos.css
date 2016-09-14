@@ -106,6 +106,8 @@ input, select {
 
 body {
     background: #EEE;
+    color: #434343;
+    font-family: calibri;
 }
 
 main {
@@ -170,6 +172,7 @@ h2 {
     font-size: 22px;
     width: 90%;
     margin: 0 auto;
+    padding: 16px 0;
 }
 
 #transportadoras, #estados, #historico {
@@ -223,4 +226,21 @@ input[type="submit"]:hover {
 a.acao.selecionado {
     background: rgba(0,0,0,.43);
     border-color: #38C;
+}
+
+div.linhaResultado {
+    display: block;
+    padding: 12px 2%;
+    width: 86%;
+    margin: 0 auto;
+}
+
+div.linhaResultado:nth-child(odd) {
+	background: #CCC;
+}
+
+div.colunaResultado {
+    width: 16%;
+    display: inline-block;
+    vertical-align: top;
 }
