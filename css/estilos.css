@@ -219,3 +219,8 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background: #3a92f8;
 }
+
+a.acao.selecionado {
+    background: rgba(0,0,0,.43);
+    border-color: #38C;
+}

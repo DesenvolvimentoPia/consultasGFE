@@ -36,9 +36,9 @@ else if(!empty($_POST['hiddenHistorico'])){
 	<h1>Consultas GFE - PIÁ</h1>
 
 	<nav>
-		<a href="#home" class="acao">Home</a>
-		<a href="#transportadoras" class="acao">Transportadoras</a>
-		<a href="#estados" class="acao">Estados</a>
+		<a href="#home" class="acao <?php if(empty($_POST['dataInicialTransp']) && empty($_POST['dataInicialEstados'])) echo "selecionado"?>">Home</a>
+		<a href="#transportadoras" class="acao <?php if(!empty($_POST['dataInicialTransp'])) echo "selecionado"?>">Transportadoras</a>
+		<a href="#estados" class="acao <?php if(!empty($_POST['dataInicialEstados'])) echo "selecionado"?>">Estados</a>
 		<a href="#historico" class="acao">Histórico</a>
 		<a href="../logout.php">Logout</a>
 	</nav>
@@ -55,13 +55,16 @@ else if(!empty($_POST['hiddenHistorico'])){
 	<h2>Consultar por Transportadoras</h2>
 	<form id="formularioTransportadoras" method="post" action="./">
 		<input type="hidden" name="hiddenTransp" value="true">
-		<label>Data Inicial<input type="date" name="dataInicialTransp"></label>
-		<label>Data Final<input type="date" name="dataFinalTransp"></label>
+		<label>Data Inicial<input type="date" required value="<?php if(!empty($_POST['dataInicialTransp'])) echo $_POST['dataInicialTransp']; ?>" name="dataInicialTransp"></label>
+		<label>Data Final<input type="date" required value="<?php if(!empty($_POST['dataFinalTransp'])) echo $_POST['dataFinalTransp']; ?>" name="dataFinalTransp"></label>
 		<input type="submit" value="Consultar">
 	</form>
 
 	<div id="resultadosTransportadoras" ng-app="appTransp">
-	
+	<h2>Resultado da Consulta</h2>
+
+	<?php include "scripts/sqlEstados.php"; ?>
+
 	</div>
 
 </section>
@@ -72,8 +75,8 @@ else if(!empty($_POST['hiddenHistorico'])){
 	<h2>Consultar por Estados</h2>
 	<form id="formularioEstado" method="post" action="./">
 	<input type="hidden" name="hiddenEstados" value="true">
-	<label>Data Inicial<input type="date" name="dataInicialEstados"></label>
-	<label>Data Final<input type="date" name="dataFinalEstados"></label>
+	<label>Data Inicial<input type="date" required value="<?php if(!empty($_POST['dataInicialEstados'])) echo $_POST['dataInicialEstados']; ?>" name="dataInicialEstados"></label>
+	<label>Data Final<input type="date" required value="<?php if(!empty($_POST['dataFinalEstados'])) echo $_POST['dataFinalEstados']; ?>" name="dataFinalEstados"></label>
 	<input type="submit" value="Consultar">
 	</form>
 </section>
