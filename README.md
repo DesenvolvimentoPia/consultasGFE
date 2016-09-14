@@ -8,7 +8,7 @@ Breve Descrição: consultasGFE é um módulo dos Relatórios de Suporte - PIÁ.
 
 -----------------------------------------------------------------------------
 
-FUNCIONAMENTO
+## FUNCIONAMENTO
 
 1- Para utlizar a Ferramenta é necessário possuir Loin/Senha para acesso dos Relatórios de Suporte - PIÁ;  
 2- Escolha na lista de Módulos o Módulo consultasGFE;  
