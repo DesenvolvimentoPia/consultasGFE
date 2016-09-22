@@ -1,6 +1,8 @@
 <?php
 
 // Arquivo de Corpo
+ 	
+include "../conexao.php";
 
 if(!empty($_POST['hiddenTransp'])){
 ?>
@@ -33,20 +35,20 @@ else if(!empty($_POST['hiddenHistorico'])){
 <main>
 	
 <header>
-	<h1>Consultas GFE - PIÁ</h1>
+	<h1><img src="../img/logo2.png" id="logoInterno"> Consultas GFE - PIÁ</h1>
 
 	<nav>
 		<a href="#home" class="acao <?php if(empty($_POST['dataInicialTransp']) && empty($_POST['dataInicialEstados'])) echo "selecionado"?>">Home</a>
 		<a href="#transportadoras" class="acao <?php if(!empty($_POST['dataInicialTransp'])) echo "selecionado"?>">Transportadoras</a>
 		<a href="#estados" class="acao <?php if(!empty($_POST['dataInicialEstados'])) echo "selecionado"?>">Estados</a>
 		<a href="#historico" class="acao">Histórico</a>
-		<a href="../logout.php">Logout</a>
+		<a href="../">Voltar</a>
 	</nav>
 
 </header>
 
 <section id="home">
-	<p>Olá, <strong>Thiago Santos</strong>. Use o Menu Superior para Navegar.</p>
+	<p>Olá, <strong><?=$_SESSION['nome']?></strong>. Use o Menu Superior para Navegar.</p>
 </section>
 
 
@@ -60,28 +62,119 @@ else if(!empty($_POST['hiddenHistorico'])){
 		<input type="submit" value="Consultar">
 	</form>
 
-	<div id="resultadosTransportadoras" ng-app="appTransp">
+	<?php if(!empty($_POST['dataInicialTransp'])) {
+
+	$sql = "INSERT INTO relatorios_historico VALUES ('', 'Pesquisa GFE Transportadoras', '".date("Y-m-d H:i:s")."', 'Pesquisa Realizada com os seguintes Parâmetros: Data Inicial ".$_POST['dataInicialTransp']." e Data Final ".$_POST['dataFinalTransp'].".', '".$_SESSION['userId']."', '1')";
+	$res = mysql_query($sql, $con);
+
+		$dataInicialTransp = str_replace("-", "", $_POST['dataInicialTransp']);
+		//echo "Data Inicial: ".$dataInicialTransp."<br>";
+		$dataFinalTransp = str_replace("-", "", $_POST['dataFinalTransp']);
+		//echo "Data Final: ".$dataFinalTransp;
+
+	ini_set("soap.wsdl_cache_enabled", "0");
+	ini_set("default_socket_timeout", "120");
+
+	ini_set('display_errors',1);
+	ini_set('display_startup_erros',1);
+	error_reporting(E_ALL);
+	 
+
+	// A seguir você devera informar a URL do webservice.
+	$oSoapClient = new SoapClient("http://lanpiasoa/wsdl/server/readFretesGFEService.wsdl");
+	 
+	$aOptions = array (
+	       "start_debug"=> "1",
+	       "debug_port"=> "10000",
+	       "debug_host"=> "localhost",
+	       "debug_stop"=> "1",
+	       "trace"=> "1");
+	 
+	foreach($aOptions as $key => $val) {
+	        $oSoapClient->__setCookie($key,$val);
+	}
+
+
+	//$resposta = $oSoapClient->readTicketSuporteFuncao("28", "a", "a", "a", "a", "a", "a", 'thiago.santos', 'tpiasl2k16*');
+	$resposta = $oSoapClient->readFretesGFEFuncao($dataInicialTransp, $dataFinalTransp, "transportadoras", 'thiago.santos', 'tpiasl2k16*');	
+		
+	?>
+	<div id="resultadosTransp" ng-app="appTransp" ng-controller="myCtrl">
 	<h2>Resultado da Consulta</h2>
 
-	<div class="linhaResultado">
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
+	<div class="tituloResultados">
+		<a  class="linkTituloo" ng-click="ordenar('numeroDia');">Dia</a><a  class="linkTitulo" ng-click="ordenar('nomeTransportadora
+');">Nome</a><a  class="linkTitulo" ng-click="ordenar('tipoOperacao');">Operação</a><a  class="linkTitulo" ng-click="ordenar('tipoNota');">Nota</a><a  class="linkTitulo" ng-click="ordenar('segundoTrecho');">2° Trecho</a><a  class="linkTitulo" ng-click="ordenar('pesoTotal');">Peso Total</a><a  class="linkTitulo" ng-click="ordenar('custoFrete');">Custo Frete</a>
 	</div>
 
-	<div class="linhaResultado">
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
-		<div class="colunaResultado">Lorem Ipsum</div>
+	<div class="linhaResultado" ng-repeat="x in records | orderBy:myOrderBy">
+		<div class="colunaResultado">{{x.numeroDia}}</div><div class="colunaResultado">{{x.nomeTransportadora}}</div><div class="colunaResultado">{{x.tipoOperacao}}</div><div class="colunaResultado">{{x.tipoNota}}</div><div class="colunaResultado">{{x.segundoTrecho}}</div><div class="colunaResultado">{{x.pesoTotal}}</div><div class="colunaResultado">{{x.CustoFrete}}</div>
 	</div>
 
+	<script>
+
+	$(function() {
+		$('.linkTitulo').click(function() {
+			var elementos = document.getElementsByClassName('linkTitulo');
+
+		for (var x = 0; x < elementos.length; x++) {
+			elementos[x].className = "linkTitulo";
+		}
+
+		this.className = "linkTitulo selecionado";
+
+		});
+	});
+
+	var app = angular.module("appTransp", []);
+	app.controller("myCtrl", function($scope) {
+    
+    $scope.records = [
+
+	<?php
+	if(is_array($resposta)) {
+
+			//echo "Sucesso! Total: ".count($resposta)." Registros";
+
+		for($i = 0; $i < count($resposta); $i++) {
+
+			if($i == 0) echo "{";
+			else echo ", {";
+
+		$z = 0;
+
+		foreach($resposta[$i] as $x => $x_value) {
+				if($z == 0) {
+	?>'<?php echo $x;?>' : <?php if(is_float($resposta[$i][$x])) echo $resposta[$i][$x]; else  echo "'".$resposta[$i][$x]."'"; ?><?php 
+			}
+
+			else {
+	?>, '<?php echo $x;?>' : <?php if(is_float($resposta[$i][$x])) echo $resposta[$i][$x]; else  echo "'".$resposta[$i][$x]."'"; ?><?php 
+			}
+			$z++;
+
+		}
+
+			echo " }";
+
+		}
+
+}
+
+?>
+
+    ];
+      $scope.ordenar = function(x) {
+	    $scope.myOrderBy = x;
+	  }
+});
+</script>
+
+	<a class="exportar" target="_blank" href="exportarCSV.php?metodo=transportadoras&inicio=<?=$dataInicialTransp?>&final=<?=$dataFinalTransp?>">Exportar Relação Completa para CSV</a>
+
 	</div>
+
+	<?php } ?>
 
 </section>
 
@@ -95,12 +188,185 @@ else if(!empty($_POST['hiddenHistorico'])){
 	<label>Data Final<input type="date" required value="<?php if(!empty($_POST['dataFinalEstados'])) echo $_POST['dataFinalEstados']; ?>" name="dataFinalEstados"></label>
 	<input type="submit" value="Consultar">
 	</form>
+
+	<?php if(!empty($_POST['dataInicialEstados'])) { 
+ 	
+	$sql = "INSERT INTO relatorios_historico VALUES ('', 'Pesquisa GFE Estados', '".date("Y-m-d H:i:s")."', 'Pesquisa Realizada com os seguintes Parâmetros: Data Inicial ".$_POST['dataInicialEstados']." e Data Final ".$_POST['dataFinalEstados'].".', '".$_SESSION['userId']."', '1')";
+	$res = mysql_query($sql, $con);
+
+		$dataInicialEstados = str_replace("-", "", $_POST['dataInicialEstados']);
+		//echo "Data Inicial: ".$dataInicialEstados."<br>";
+		$dataFinalEstados = str_replace("-", "", $_POST['dataFinalEstados']);
+		//echo "Data Final: ".$dataFinalEstados;
+
+	ini_set("soap.wsdl_cache_enabled", "0");
+	ini_set("default_socket_timeout", "120");
+
+	ini_set('display_errors',1);
+	ini_set('display_startup_erros',1);
+	error_reporting(E_ALL);
+	 
+
+	// A seguir você devera informar a URL do webservice.
+	$oSoapClient = new SoapClient("http://lanpiasoa/wsdl/server/readFretesGFEService.wsdl");
+	 
+	$aOptions = array (
+	       "start_debug"=> "1",
+	       "debug_port"=> "10000",
+	       "debug_host"=> "localhost",
+	       "debug_stop"=> "1",
+	       "trace"=> "1");
+	 
+	foreach($aOptions as $key => $val) {
+	        $oSoapClient->__setCookie($key,$val);
+	}
+
+
+	//$resposta = $oSoapClient->readTicketSuporteFuncao("28", "a", "a", "a", "a", "a", "a", 'thiago.santos', 'tpiasl2k16*');
+	$resposta = $oSoapClient->readFretesGFEFuncao($dataInicialEstados, $dataFinalEstados, "estados", 'thiago.santos', 'tpiasl2k16*');	
+	
+	$inicio2 = explode("-", $_POST['dataInicialEstados']);
+	$inicio = $inicio2[2]."/".$inicio2[1]."/".$inicio2[0];
+
+	$final2 = explode("-", $_POST['dataFinalEstados']);
+	$final = $final2[2]."/".$final2[1]."/".$final2[0];
+
+	?>
+	<div id="resultadosEstados" ng-app="appTransp" ng-controller="myCtrl">
+	<h2>Resultado da Consulta | <?=$inicio;?> - <?=$final;?></h2>
+
+	<div class="tituloResultados">
+		<a class="linkTitulo selecionado" ng-click="ordenar('numeroDia');">Dia</a><a class="linkTitulo" ng-click="ordenar('tipoNota');">Nota</a><a  class="linkTitulo" ng-click="ordenar('tipoOperacao');">Operação</a><a  class="linkTitulo" ng-click="ordenar('estado');">UF</a><a  class="linkTitulo" ng-click="ordenar('pesoTotal');">Peso Total</a><a  class="linkTitulo" ng-click="ordenar('faturamento');">Faturamento</a><a  class="linkTitulo" ng-click="ordenar('custoFrete');">Custo Frete</a>
+	</div>
+
+	<div class="linhaResultado" ng-repeat="x in records | orderBy:myOrderBy">
+		   <div class="colunaResultado">{{x.numeroDia}}</div><div class="colunaResultado">{{x.tipoNota}}</div><div class="colunaResultado">{{x.tipoOperacao}}</div><div class="colunaResultado">{{x.estado}}</div><div class="colunaResultado">{{x.pesoTotal}}</div><div class="colunaResultado">{{x.faturamento}}</div><div class="colunaResultado">{{x.custoFrete}}</div>
+	</div>
+
+	<script>
+
+	$(function() {
+		$('.linkTitulo').click(function() {
+			var elementos = document.getElementsByClassName('linkTitulo');
+
+		for (var x = 0; x < elementos.length; x++) {
+			elementos[x].className = "linkTitulo";
+		}
+
+		this.className = "linkTitulo selecionado";
+
+		});
+	});
+
+	var app = angular.module("appTransp", []);
+	app.controller("myCtrl", function($scope) {
+    
+    $scope.records = [
+
+	<?php
+	if(is_array($resposta)) {
+
+			//echo "Sucesso! Total: ".count($resposta)." Registros";
+
+		for($i = 0; $i < count($resposta); $i++) {
+
+			if($i == 0) echo "{";
+			else echo ", {";
+
+		$z = 0;
+
+		foreach($resposta[$i] as $x => $x_value) {
+				if($z == 0) {
+	?>'<?php echo $x;?>' : <?php if(is_float($resposta[$i][$x])) echo $resposta[$i][$x]; else  echo "'".$resposta[$i][$x]."'"; ?><?php 
+			}
+
+			else {
+	?>, '<?php echo $x;?>' : <?php if(is_float($resposta[$i][$x])) echo number_format($resposta[$i][$x], 2, '.', ''); else  echo "'".$resposta[$i][$x]."'"; ?><?php 
+			}
+			$z++;
+
+		}
+
+			echo "}";
+
+		}
+
+}
+
+?>
+
+    ];
+      $scope.ordenar = function(x) {
+	    $scope.myOrderBy = x;
+	  }
+});
+</script>
+
+	<a class="exportar" target="_blank" href="exportarCSV.php?metodo=estados&inicio=<?=$dataInicialEstados?>&final=<?=$dataFinalEstados?>">Exportar Relação Completa para CSV</a>
+
+	</div>
+
+	<?php } ?>
+
+
 </section>
 
 
 
-<section id="historico">
+<section id="historico" ng-app="appHistorico" ng-controller="myCtrlHistorico">
 	<h2>Consultar Histórico</h2>
+
+	<div class="tituloResultados">
+		<a class="linkTitulo2 selecionado" ng-click="ordenar2('diaHora');">Dia e Hora</a><a  class="linkTitulo2" ng-click="ordenar2('evento');">Evento</a><a  class="linkTitulo2" ng-click="ordenar2('descricao');">Descrição</a><a  class="linkTitulo2" ng-click="ordenar2('usuario');">Usuário</a>
+	</div>
+
+	<div class="linhaResultado" ng-repeat="x in records | orderBy:myOrderBy2">
+		<div class="colunaResultado2">{{x.diaHora}}</div><div class="colunaResultado2">{{x.evento}}</div><div class="colunaResultado2">{{x.descricao}}</div><div class="colunaResultado2">{{x.usuario}}</div>
+	</div>
+
+	<script>
+
+	$(function() {
+		$('.linkTitulo2').click(function() {
+			var elementos = document.getElementsByClassName('linkTitulo2');
+
+		for (var x = 0; x < elementos.length; x++) {
+			elementos[x].className = "linkTitulo2";
+		}
+
+		this.className = "linkTitulo2 selecionado";
+
+		});
+	});
+
+	var app = angular.module("appHistorico", []);
+	app.controller("myCtrlHistorico", function($scope) {
+    
+    $scope.records = [
+
+	<?php
+
+	$sql = "SELECT relatorios_historico.id, relatorios_historico.nome, hora, descricao, relatorios_usuarios.nome AS usuario FROM relatorios_historico LEFT JOIN relatorios_usuarios ON relatorios_historico.id_usuario = relatorios_usuarios.id  WHERE sistema < 2 ORDER BY relatorios_historico.id DESC";
+	$res = mysql_query($sql, $con);
+	$num = mysql_num_rows($res);
+
+	for($i = 0; $i < $num; $i++) {
+	$row = mysql_fetch_array($res);
+		if($i == 0) echo "{";
+		else echo ", {";
+		echo "'diaHora': '".$row['hora']."', 'evento': '".$row['nome']."', 'descricao': '".$row['descricao']."', 'usuario': '".$row['usuario']."' }";
+	}
+	
+	?>
+
+    ];
+      $scope.ordenar2 = function(x) {
+	    $scope.myOrderBy2 = x;
+	  }
+});
+angular.bootstrap('#historico', ['appHistorico']);
+</script>
+
 </section>
 
 </main>

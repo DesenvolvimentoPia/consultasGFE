@@ -130,14 +130,14 @@ h1 {
     padding: 25px 0;
     margin: 0 0 7px;
     font-size: 28px;
-    font-family: "Champagne & Limousines";
+    font-family: "Champagne & Limousines", 'Champagne';
 }
 
 nav a {
     padding: 16px 34px;
     display: inline-block;
     color: #FFF;
-    font-family: "Champagne & Limousines";
+    font-family: "Champagne & Limousines", 'Champagne';
     font-size: 20px;
     border-bottom: 5px #EEE solid;
     cursor: pointer;
@@ -233,6 +233,7 @@ div.linhaResultado {
     padding: 12px 2%;
     width: 86%;
     margin: 0 auto;
+    text-align: center;
 }
 
 div.linhaResultado:nth-child(odd) {
@@ -240,7 +241,97 @@ div.linhaResultado:nth-child(odd) {
 }
 
 div.colunaResultado {
-    width: 16%;
+    width: 14%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+}
+
+footer {
+    text-align: center;
+    margin: 25px 0 12px;
+}
+
+a.exportar {
+    display: block;
+    margin: 25px auto;
+    width: 50%;
+    text-align: center;
+    padding: 16px 0;
+    background: #777;
+    color: #FFF;
+    cursor: pointer;
+    transition: all 0.43s;
+    -o-transition: all 0.43s;
+    -moz-transition: all 0.43s;
+    -webkit-transition: all 0.43s;
+}
+
+
+a.exportar:hover {
+    background: #5da2F6;
+}
+
+.tituloResultados {
+    display: block;
+    padding: 0px 2%;
+    width: 86%;
+    margin: 0 auto;
+    background: #777;
+    color: #FFF;
+    text-align: center;
+}
+
+.tituloResultados a {
+    width: 14%;
     display: inline-block;
     vertical-align: top;
+    padding: 16px 0;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.43s;
+    -o-transition: all 0.43s;
+    -moz-transition: all 0.43s;
+    -webkit-transition: all 0.43s;
+}
+
+.tituloResultados a:hover {
+    background: #555;
+}
+
+.tituloResultados a.selecionado {
+    background: #407ec3;
+}
+
+div#resultadosEstados, div#resultadosTransp {
+    margin-top: 34px;
+}
+
+div.colunaResultado2 {
+    width: 25%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+}
+
+a.linkTitulo2 {
+    width: 25%;
+}
+
+img#logoInterno {
+    width: 20%;
+    vertical-align: middle;
+    margin: 0 13% 0 -33%;
+}
+
+
+
+@font-face {
+    font-family: 'Champagne';
+    src: url('../../fontes/champagne__limousines-webfont.eot');
+    src: url('../../fontes/champagne__limousines-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../../fontes/champagne__limousines-webfont.woff') format('woff'),
+        url('../../fontes/champagne__limousines-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
