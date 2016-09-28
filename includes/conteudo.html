@@ -104,11 +104,11 @@ else if(!empty($_POST['hiddenHistorico'])){
 
 	<div class="tituloResultados">
 		<a  class="linkTituloo" ng-click="ordenar('numeroDia');">Dia</a><a  class="linkTitulo" ng-click="ordenar('nomeTransportadora
-');">Nome</a><a  class="linkTitulo" ng-click="ordenar('tipoOperacao');">Operação</a><a  class="linkTitulo" ng-click="ordenar('tipoNota');">Nota</a><a  class="linkTitulo" ng-click="ordenar('segundoTrecho');">2° Trecho</a><a  class="linkTitulo" ng-click="ordenar('pesoTotal');">Peso Total</a><a  class="linkTitulo" ng-click="ordenar('custoFrete');">Custo Frete</a>
+');">Nome</a><a  class="linkTitulo" ng-click="ordenar('tipoOperacao');">Operação</a><a  class="linkTitulo" ng-click="ordenar('tipoNota');">Nota</a><a  class="linkTitulo" ng-click="ordenar('segundoTrecho');">Faturamento</a><a  class="linkTitulo" ng-click="ordenar('pesoTotal');">Peso Total</a><a  class="linkTitulo" ng-click="ordenar('custoFrete');">Custo Frete</a>
 	</div>
 
 	<div class="linhaResultado" ng-repeat="x in records | orderBy:myOrderBy">
-		<div class="colunaResultado">{{x.numeroDia}}</div><div class="colunaResultado">{{x.nomeTransportadora}}</div><div class="colunaResultado">{{x.tipoOperacao}}</div><div class="colunaResultado">{{x.tipoNota}}</div><div class="colunaResultado">{{x.segundoTrecho}}</div><div class="colunaResultado">{{x.pesoTotal}}</div><div class="colunaResultado">{{x.CustoFrete}}</div>
+		<div class="colunaResultado">{{x.numeroDia}}</div><div class="colunaResultado">{{x.nomeTransportadora}}</div><div class="colunaResultado">{{x.tipoOperacao}}</div><div class="colunaResultado">{{x.tipoNota}}</div><div class="colunaResultado">{{x.faturamento}}</div><div class="colunaResultado">{{x.pesoTotal}}</div><div class="colunaResultado">{{x.CustoFrete}}</div>
 	</div>
 
 	<script>
@@ -170,7 +170,7 @@ else if(!empty($_POST['hiddenHistorico'])){
 });
 </script>
 
-	<a class="exportar" target="_blank" href="exportarCSV.php?metodo=transportadoras&inicio=<?=$dataInicialTransp?>&final=<?=$dataFinalTransp?>">Exportar Relação Completa para CSV</a>
+	<a class="exportar" target="_blank" href="exportarXLS.php?metodo=transportadoras&inicio=<?=$dataInicialTransp?>&final=<?=$dataFinalTransp?>">Exportar Relação Completa para XLS</a>
 
 	</div>
 
@@ -302,7 +302,7 @@ else if(!empty($_POST['hiddenHistorico'])){
 });
 </script>
 
-	<a class="exportar" target="_blank" href="exportarCSV.php?metodo=estados&inicio=<?=$dataInicialEstados?>&final=<?=$dataFinalEstados?>">Exportar Relação Completa para CSV</a>
+	<a class="exportar" target="_blank" href="exportarXLS.php?metodo=estados&inicio=<?=$dataInicialEstados?>&final=<?=$dataFinalEstados?>">Exportar Relação Completa para XLS</a>
 
 	</div>
 
