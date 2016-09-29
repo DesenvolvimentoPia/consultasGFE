@@ -39,7 +39,7 @@ else if(!empty($_POST['hiddenHistorico'])){
 
 	<nav>
 		<a href="#home" class="acao <?php if(empty($_POST['dataInicialTransp']) && empty($_POST['dataInicialEstados'])) echo "selecionado"?>">Home</a>
-		<a href="#transportadoras" class="acao <?php if(!empty($_POST['dataInicialTransp'])) echo "selecionado"?>">Transportadoras</a>
+		<!--<a href="#transportadoras" class="acao <?php if(!empty($_POST['dataInicialTransp'])) echo "selecionado"?>">Transportadoras</a>-->
 		<a href="#estados" class="acao <?php if(!empty($_POST['dataInicialEstados'])) echo "selecionado"?>">Estados</a>
 		<a href="#historico" class="acao">Histórico</a>
 		<a href="../">Voltar</a>
@@ -57,7 +57,7 @@ else if(!empty($_POST['hiddenHistorico'])){
 	<h2>Consultar por Transportadoras</h2>
 	<form id="formularioTransportadoras" method="post" action="./">
 		<input type="hidden" name="hiddenTransp" value="true">
-		<label>Data Inicial<input type="date" required value="<?php if(!empty($_POST['dataInicialTransp'])) echo $_POST['dataInicialTransp']; ?>" name="dataInicialTransp"></label>
+		<label>Data Inicial<input type="date" required value="<?php if(!empty($_POST['dataInicialTransp'])) echo $_POST['dataInicialTransp']; ?>" name="dataInicialTransp" max='<?=date('Y')?>-<?=date('m', strtotime("-7 day"))?>-<?=date('d', strtotime("-7 day"))?>'></label>
 		<label>Data Final<input type="date" required value="<?php if(!empty($_POST['dataFinalTransp'])) echo $_POST['dataFinalTransp']; ?>" name="dataFinalTransp"></label>
 		<input type="submit" value="Consultar">
 	</form>
@@ -178,13 +178,19 @@ else if(!empty($_POST['hiddenHistorico'])){
 
 </section>
 
-
+<div id="loader">
+<div class="spinner">
+  <div class="bounce1"></div>
+  <div class="bounce2"></div>
+  <div class="bounce3"></div>
+</div>
+</div>
 
 <section id="estados">
 	<h2>Consultar por Estados</h2>
-	<form id="formularioEstado" method="post" action="./">
+	<form id="formularioEstado" onsubmit="$('#loader').fadeIn()" method="post" action="./">
 	<input type="hidden" name="hiddenEstados" value="true">
-	<label>Data Inicial<input type="date" required value="<?php if(!empty($_POST['dataInicialEstados'])) echo $_POST['dataInicialEstados']; ?>" name="dataInicialEstados"></label>
+	<label>Data Inicial<input type="date" required value="<?php if(!empty($_POST['dataInicialEstados'])) echo $_POST['dataInicialEstados']; ?>" name="dataInicialEstados" max='<?=date('Y')?>-<?=date('m', strtotime("-7 day"))?>-<?=date('d', strtotime("-7 day"))?>'></label>
 	<label>Data Final<input type="date" required value="<?php if(!empty($_POST['dataFinalEstados'])) echo $_POST['dataFinalEstados']; ?>" name="dataFinalEstados"></label>
 	<input type="submit" value="Consultar">
 	</form>
